@@ -1,0 +1,23 @@
+'use strict'
+
+exports.TieClient = require('./lib/tie-client')
+
+exports.AtdAttrib = require('./lib/constants/atd-attrib')
+exports.AtdTrustLevel = require('./lib/constants/atd-trust-level')
+exports.CertEnterpriseAttrib = require('./lib/constants/cert-enterprise-attrib')
+exports.CertGtiAttrib = require('./lib/constants/cert-gti-attrib')
+exports.CertProvider = require('./lib/constants/cert-provider')
+exports.CertRepChangeEventProp = require('./lib/constants/cert-rep-change-event-prop')
+exports.CertReputationOverriddenProp = require('./lib/constants/cert-reputation-overridden-prop')
+exports.CertReputationProp = require('./lib/constants/cert-reputation-prop')
+exports.DetectionEventProp = require('./lib/constants/detection-event-prop')
+exports.FileProvider = require('./lib/constants/file-provider')
+exports.FileEnterpriseAttrib = require('./lib/constants/file-enterprise-attrib')
+exports.FileGtiAttrib = require('./lib/constants/file-gti-attrib')
+exports.FileProvider = require('./lib/constants/file-provider')
+exports.FileRepChangeEventProp = require('./lib/constants/file-rep-change-event-prop')
+exports.FileReputationProp = require('./lib/constants/file-reputation-prop')
+exports.FirstInstanceEventProp = require('./lib/constants/first-instance-event-prop')
+exports.FirstRefProp = require('./lib/constants/first-ref-prop')
+exports.HashType = require('./lib/constants/hash-type')
+exports.TrustLevel = require('./lib/constants/trust-level')
