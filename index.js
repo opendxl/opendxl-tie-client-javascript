@@ -11,6 +11,7 @@ exports.CertRepChangeEventProp = require('./lib/constants/cert-rep-change-event-
 exports.CertReputationOverriddenProp = require('./lib/constants/cert-reputation-overridden-prop')
 exports.CertReputationProp = require('./lib/constants/cert-reputation-prop')
 exports.DetectionEventProp = require('./lib/constants/detection-event-prop')
+exports.EpochUtil = require('./lib/constants/epoch-util')
 exports.FileProvider = require('./lib/constants/file-provider')
 exports.FileEnterpriseAttrib = require('./lib/constants/file-enterprise-attrib')
 exports.FileGtiAttrib = require('./lib/constants/file-gti-attrib')

@@ -6,6 +6,7 @@ var tie = common.requireTieClient()
 var CertProvider = tie.CertProvider
 var CertEnterpriseAttrib = tie.CertEnterpriseAttrib
 var CertReputationProp = tie.CertReputationProp
+var EpochUtil = tie.EpochUtil
 var FileProvider = tie.FileProvider
 var FileEnterpriseAttrib = tie.FileEnterpriseAttrib
 var FileReputationProp = tie.FileReputationProp
@@ -65,7 +66,7 @@ client.connect(function () {
           var firstContactAttrib = entRepAttribs[FileEnterpriseAttrib.FIRST_CONTACT]
           if (firstContactAttrib) {
             console.log('\tFirst contact: ' +
-              FileEnterpriseAttrib.toLocalTimeString(firstContactAttrib))
+              EpochUtil.toLocalTimeString(firstContactAttrib))
           }
         }
         console.log('\nFull file reputation response:\n' +
@@ -94,7 +95,7 @@ client.connect(function () {
                 var firstContactAttrib = entRepAttribs[CertEnterpriseAttrib.FIRST_CONTACT]
                 if (firstContactAttrib) {
                   console.log('\tFirst contact: ' +
-                    CertEnterpriseAttrib.toLocalTimeString(firstContactAttrib))
+                    EpochUtil.toLocalTimeString(firstContactAttrib))
                 }
               }
               console.log('\nFull certificate reputation response:\n' +

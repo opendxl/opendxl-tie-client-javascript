@@ -3,6 +3,7 @@
 var common = require('../common')
 var dxl = require('@opendxl/dxl-client')
 var tie = common.requireTieClient()
+var EpochUtil = tie.EpochUtil
 var FirstRefProp = tie.FirstRefProp
 var HashType = tie.HashType
 var TieClient = tie.TieClient
@@ -36,7 +37,7 @@ client.connect(function () {
         console.log('\nSystems that have referenced the file:\n')
         systems.forEach(function (system) {
           console.log('\t' + system[FirstRefProp.SYSTEM_GUID] + ': ' +
-            FirstRefProp.toLocalTimeString(system[FirstRefProp.DATE])
+            EpochUtil.toLocalTimeString(system[FirstRefProp.DATE])
           )
         })
       }
