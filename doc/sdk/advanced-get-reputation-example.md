@@ -1,22 +1,102 @@
-'use strict'
+This sample demonstrates invoking the McAfee Threat Intelligence Exchange (TIE)
+DXL service to retrieve the reputation a file and certificate (as identified by
+their hashes). Further, this example demonstrates using the constants modules
+&mdash; for example, [FileEnterpriseAttrib]{@link module:FileEnterpriseAttrib}
+and [CertEnterpriseAttrib]{@link module:CertEnterpriseAttrib} &mdash; to
+examine specific fields within the reputation responses.
 
-var common = require('../common')
-var dxl = require('@opendxl/dxl-client')
-var tie = common.requireTieClient()
-var CertProvider = tie.CertProvider
-var CertEnterpriseAttrib = tie.CertEnterpriseAttrib
-var CertReputationProp = tie.CertReputationProp
-var EpochUtil = tie.EpochUtil
-var FileProvider = tie.FileProvider
-var FileEnterpriseAttrib = tie.FileEnterpriseAttrib
-var FileReputationProp = tie.FileReputationProp
-var HashType = tie.HashType
-var TieClient = tie.TieClient
-var MessageUtils = require('@opendxl/dxl-bootstrap').MessageUtils
+### Prerequisites
 
-// Create DXL configuration from file
-var config = dxl.Config.createDxlConfigFromFile(common.CONFIG_FILE)
+* The samples configuration step has been completed (see {@tutorial samples}).
+* A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+  fabric.
 
+### Running
+
+To run this sample execute the `sample/basic/advanced-get-reputation-example.js`
+script as follows:
+
+```sh
+$ node sample/basic/advanced-get-reputation-example.js
+```
+
+The output should appear similar to the following:
+
+```
+File reputation response:
+    Global Threat Intelligence (GTI) trust level: 99
+    Enterprise prevalence: 242
+    First contact: 2016-10-19 11:46:42
+
+Full file reputation response:
+{
+    "1": {
+        "attributes": {
+            "2120340": "2139160704"
+        },
+        "createDate": 1480455704,
+        "providerId": 1,
+        "trustLevel": 99
+    },
+    "3": {
+        "attributes": {
+            "2101652": "242",
+            "2102165": "1476902802",
+            "2111893": "251",
+            "2114965": "4",
+            "2139285": "73183493944770750"
+        },
+        "createDate": 1476902802,
+        "providerId": 3,
+        "trustLevel": 99
+    }
+}
+
+Certificate reputation response:
+    Global Threat Intelligence (GTI) trust level: 99
+    Enterprise prevalence: 12
+    First contact: 2016-10-12 17:28:34
+
+Full certificate reputation response:
+{
+    "2": {
+        "attributes": {
+            "2108821": "94",
+            "2109077": "1454912619",
+            "2117524": "0",
+            "2120596": "0"
+        },
+        "createDate": 1476318514,
+        "providerId": 2,
+        "trustLevel": 99
+    },
+    "4": {
+        "attributes": {
+            "2109333": "12",
+            "2109589": "1476318514",
+            "2139285": "73183493944770750"
+        },
+        "createDate": 1476318514,
+        "providerId": 4,
+        "trustLevel": 0
+    }
+}
+```
+
+The sample outputs the reputation information for a file and a certificate.
+
+In addition to dumping all of the reputation information received, this sample
+pulls out three specific properties for the file and certificate:
+
+  * The Global Threat Intelligence (GTI) trust level.
+  * The prevalence of the file or certificate within the enterprise.
+  * The first time the file or certificate was found within the enterprise.
+
+### Details
+
+The majority of the sample code is shown below:
+
+```js
 // Create the client
 var client = new dxl.Client(config)
 
@@ -143,3 +223,27 @@ client.connect(function () {
     fileHashes
   )
 })
+```
+
+Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+[connect()](https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect)
+method will be invoked. From within the callback function, a {@link TieClient}
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.
+
+To request the reputation of the file, a call is made to the TieClient
+instance's [getFileReputation()]{@link TieClient#getFileReputation}
+method, along with the hash values that are used to identify the file.
+
+To request the reputation of the certificate, a call is made to the TieClient
+instance's
+[getCertificateReputation()]{@link TieClient#getCertificateReputation}
+method, along with the hash values that are used to identify the certificate.
+
+On successful execution of the reputation lookups, the second parameter provided
+to the callbacks &mdash; `fileReputations` / `certReputations` &mdash;
+contains the reputations. The constants modules &mdash; for example,
+[FileEnterpriseAttrib]{@link module:FileEnterpriseAttrib} and
+[CertEnterpriseAttrib]{@link module:CertEnterpriseAttrib} &mdash; are used to
+examine specific fields within the reputation responses.
