@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Basic Set File Reputation Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Basic Set File Reputation Example</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Basic Set File Reputation Example</h2>
+</header>
+
+<article>
+    <p>This sample demonstrates invoking the McAfee Threat Intelligence Exchange (TIE)
+DXL service to set the enterprise-specific <code>trust level</code> of a file (as
+identified by its hashes).</p>
+<h3>Prerequisites</h3><ul>
+<li><p>The samples configuration step has been completed (see <a href="tutorial-samples.html">Samples</a>).</p>
+</li>
+<li><p>A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+fabric.</p>
+</li>
+<li><p>The JavaScript DXL client must be authorized to send messages to the
+<code>/mcafee/service/tie/file/reputation/set</code> topic, which is part of the 
+<code>TIE Server Set Enterprise Reputation</code> authorization group.</p>
+<p>The following page provides an example of authorizing a Python client to send
+messages to an <code>authorization group</code>. While the example is based on McAfee
+Active Response (MAR), the instructions are the same with the exception of
+swapping the <code>TIE Server Set Enterprise Reputation</code> <code>authorization group</code> in
+place of <code>Active Response Server API</code>:</p>
+<p><a href="https://opendxl.github.io/opendxl-client-python/pydoc/marsendauth.html">https://opendxl.github.io/opendxl-client-python/pydoc/marsendauth.html</a></p>
+</li>
+</ul>
+<h3>Running</h3><p>To run this sample execute the <code>sample/basic/basic-set-file-reputation-example.js</code>
+script as follows:</p>
+<pre class="prettyprint source lang-sh"><code>$ node sample/basic/basic-set-file-reputation-example.js</code></pre><p>If the <code>set reputation</code> operation succeeds the following message will be
+displayed:</p>
+<pre class="prettyprint source"><code>Succeeded.</code></pre><h3>Details</h3><p>The majority of the sample code is shown below:</p>
+<pre class="prettyprint source lang-js"><code>// Create the client
+var client = new dxl.Client(config)
+
+// Hashes for the file whose reputation should be set. These use the hashes for
+// notepad.exe by default but could be replaced with appropriate values for the
+// file whose reputation should be set.
+var FILE_MD5 = 'f2c7bb8acc97f92e987a2d4087d021b1'
+var FILE_SHA1 = '7eb0139d2175739b3ccb0d1110067820be6abd29'
+var FILE_SHA256 = '142e1d688ef0568370c37187fd9f2351d7ddeda574f8bfa9b0fa4ef42db85aa2'
+
+// Connect to the fabric, supplying a callback function which is invoked
+// when the connection has been established
+client.connect(function () {
+  var tieClient = new TieClient(client)
+  var hashes = {}
+  hashes[HashType.MD5] = FILE_MD5
+  hashes[HashType.SHA1] = FILE_SHA1
+  hashes[HashType.SHA256] = FILE_SHA256
+
+  // Set the Enterprise reputation for the file to Known Trusted
+  tieClient.setFileReputation(
+    function (error) {
+      // Destroy the client - frees up resources so that the application
+      // stops running
+      client.destroy()
+      if (error) {
+        console.log('Error: ' + error.message)
+      } else {
+        console.log('Succeeded')
+      }
+    },
+    TrustLevel.KNOWN_TRUSTED,
+    hashes,
+    'notepad.exe',
+    'Reputation set via OpenDXL'
+  )
+})</code></pre><p>Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect">connect()</a>
+method will be invoked. From within the callback function, a <a href="TieClient.html">TieClient</a>
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.</p>
+<p>The enterprise-specific <code>trust level</code> is established for the file by invoking
+the TieClient instance's
+<a href="TieClient.html#setFileReputation">setFileReputation()</a> method, along with the 
+<code>hash values</code> used to identify the file.</p>
+<p>The <code>filename</code> and <code>comment</code> &mdash; &quot;notepad.exe&quot; and
+&quot;Reputation set via OpenDXL&quot; in the above example, respectively &mdash; are
+optional but are useful in identifying the particular file that is associated
+with the hashes (especially if the file did not previously exist in the TIE
+repository).</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

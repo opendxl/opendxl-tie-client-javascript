@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Basic Get File First References Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Basic Get File First References Example</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Basic Get File First References Example</h2>
+</header>
+
+<article>
+    <p>This sample demonstrates invoking the McAfee Threat Intelligence Exchange (TIE)
+DXL service to retrieve the set of systems which have referenced (typically
+executed) a file (as identified by hashes).</p>
+<h3>Prerequisites</h3><ul>
+<li>The samples configuration step has been completed (see <a href="tutorial-samples.html">Samples</a>).</li>
+<li>A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+fabric.</li>
+</ul>
+<h3>Setup</h3><p>Modify the example to include the hashes of the file you want to use for the
+lookup.</p>
+<pre class="prettyprint source lang-js"><code>// Hashes for the file to lookup. These use the hashes for notepad.exe by
+// default but could be replaced with appropriate values for the desired
+// file to lookup.
+var FILE_MD5 = 'f2c7bb8acc97f92e987a2d4087d021b1'
+var FILE_SHA1 = '7eb0139d2175739b3ccb0d1110067820be6abd29'
+var FILE_SHA256 = '142e1d688ef0568370c37187fd9f2351d7ddeda574f8bfa9b0fa4ef42db85aa2'</code></pre><p>This sample is equivalent to running the, <code>&quot;Where Has File Run&quot;</code> action in the
+<code>&quot;TIE Reputations&quot;</code> page within ePO.</p>
+<p>A simple way to determine a valid set of hashes to use with this sample is
+detailed below:</p>
+<ul>
+<li>Open ePO and navigate to the <code>&quot;TIE Reputations&quot;</code> page.</li>
+<li>Select the <code>&quot;File Search&quot;</code> tab.</li>
+<li>Select a <code>file</code> in the list.</li>
+<li>Click the <code>&quot;Actions&quot;</code> button at the bottom left and select 
+<code>&quot;Where Has File Run&quot;</code>.</li>
+<li>The <code>&quot;Where Has File Run&quot;</code> results page is displayed. The GUIDs associated
+with the systems in this list are what will be displayed when the sample is
+executed.</li>
+<li>Close the <code>&quot;Where Has File Run&quot;</code> results.</li>
+<li>Click on the same <code>file</code> to display its associated reputation information.</li>
+<li>In the <code>&quot;File Reputations Information&quot;</code> page copy the <code>&quot;MD5 Hash&quot;</code>,
+<code>&quot;SHA-1 Hash&quot;</code>, and <code>&quot;SHA-256 Hash&quot;</code> values and paste them into the sample
+prior to running (as shown in the example above).</li>
+</ul>
+<h3>Running</h3><p>To run this sample execute the
+<code>sample/basic/basic-get-file-first-ref-example.js</code> script as follows:</p>
+<pre class="prettyprint source lang-sh"><code>$ node sample/basic/basic-get-file-first-ref-example.js</code></pre><p>The output should appear similar to the following:</p>
+<pre class="prettyprint source"><code>Systems that have referenced the file:
+
+        {3a6f574a-3e6f-436d-acd4-bcde336b054d}: 2016-10-07 13:54:52
+        {d48d3d1a-915e-11e6-323a-000c2992f5d9}: 2016-10-12 16:57:54
+        {68125cd6-a5d8-11e6-348e-000c29663178}: 2016-11-08 09:29:32</code></pre><p>The sample outputs the GUIDs for systems that have referenced the file. The
+first time each system referenced the file is also displayed.</p>
+<h3>Details</h3><p>The majority of the sample code is shown below:</p>
+<pre class="prettyprint source lang-js"><code>// Create the client
+var client = new dxl.Client(config)
+
+// Hashes for the file to lookup. These use the hashes for notepad.exe by
+// default but could be replaced with appropriate values for the desired
+// file to lookup.
+var FILE_MD5 = 'f2c7bb8acc97f92e987a2d4087d021b1'
+var FILE_SHA1 = '7eb0139d2175739b3ccb0d1110067820be6abd29'
+var FILE_SHA256 = '142e1d688ef0568370c37187fd9f2351d7ddeda574f8bfa9b0fa4ef42db85aa2'
+
+// Connect to the fabric, supplying a callback function which is invoked
+// when the connection has been established
+client.connect(function () {
+  // Create the McAfee Threat Intelligence Exchange (TIE) client
+  var tieClient = new TieClient(client)
+
+  var fileHashes = {}
+  fileHashes[HashType.MD5] = FILE_MD5
+  fileHashes[HashType.SHA1] = FILE_SHA1
+  fileHashes[HashType.SHA256] = FILE_SHA256
+
+  // Get an array of systems that have referenced the file
+  tieClient.getFileFirstReferences(
+    function (error, systems) {
+      // Destroy the client - frees up resources so that the application
+      // stops running
+      client.destroy()
+      if (error) {
+        console.log('Error getting file references: ' + error.message)
+      } else {
+        // Display information for the systems which have referenced the file
+        console.log('\nSystems that have referenced the file:\n')
+        systems.forEach(function (system) {
+          console.log('\t' + system[FirstRefProp.SYSTEM_GUID] + ': ' +
+            EpochUtil.toLocalTimeString(system[FirstRefProp.DATE])
+          )
+        })
+      }
+    },
+    fileHashes
+  )
+})</code></pre><p>Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect">connect()</a>
+method will be invoked. From within the callback function, a <a href="TieClient.html">TieClient</a>
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.</p>
+<p>Next, a call is made to the TieClient instance's
+<a href="TieClient.html#getFileFirstReferences">getFileFirstReferences()</a>
+method, along with the hash values that are used to identify the file.</p>
+<p>On successful execution of the first references lookup, the second parameter
+provided to the callback, <code>systems</code>, contains an array of systems. The <code>systems</code>
+array is iterated, displaying the system's GUID along with the first time the
+system referenced the file.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

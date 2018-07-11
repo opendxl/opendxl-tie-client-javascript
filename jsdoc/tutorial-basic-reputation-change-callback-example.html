@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Basic Reputation Change Callback Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Basic Reputation Change Callback Example</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Basic Reputation Change Callback Example</h2>
+</header>
+
+<article>
+    <p>This sample demonstrates registering a callback with the DXL fabric to receive
+<code>reputation change</code> events sent by the McAfee Threat Intelligence Exchange (TIE)
+DXL service when the <code>reputation</code> of a file or certificate changes.</p>
+<h3>Prerequisites</h3><ul>
+<li>The samples configuration step has been completed (see <a href="tutorial-samples.html">Samples</a>).</li>
+<li>A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+fabric.</li>
+</ul>
+<h3>Running</h3><p>To run this sample execute the
+<code>sample/basic/basic-reputation-change-callback-example.js</code> script as follows:</p>
+<pre class="prettyprint source lang-sh"><code>$ node sample/basic/basic-reputation-change-callback-example.js</code></pre><p>The output should appear similar to the following:</p>
+<pre class="prettyprint source"><code>Waiting for reputation change events...</code></pre><p>At this point the sample is listening for both file and certificate reputation
+events from the DXL fabric.</p>
+<h3>Force Reputation Change</h3><p>The next step is to force a reputation change for a file or certificate via ePO.
+The steps to accomplish this are listed below:</p>
+<ul>
+<li><p>Open ePO and navigate to the <code>&quot;TIE Reputations&quot;</code> page.</p>
+</li>
+<li><p>Select the <code>&quot;File Search&quot;</code> or <code>&quot;Certificate Search&quot;</code> tab.</p>
+</li>
+<li><p>Select a <code>file</code> or <code>certificate</code> in the list.</p>
+</li>
+<li><p>Click the <code>&quot;Actions&quot;</code> button at the bottom left and select a new
+&quot;Enterprise&quot; reputation (for example, <code>Known Trusted</code>).</p>
+<ul>
+<li>NOTE: It is safest to select a file (or certificate) that has a &quot;GTI&quot;
+Reputation of <code>Known Trusted</code> and simply set the &quot;Enterprise&quot; reputation
+to be the same (<code>Known Trusted</code>).</li>
+</ul>
+</li>
+<li><p>Remove the override by clicking on the <code>&quot;Actions&quot;</code> button again and
+selecting <code>&quot;Remove Override&quot;</code>.</p>
+</li>
+</ul>
+<h3>Reputation Change Output</h3><p>After the reputation change has occurred the reputation change information
+should appear within the console that the sample is running (similar to the
+output below):</p>
+<pre class="prettyprint source"><code>Reputation change on topic: /mcafee/event/tie/file/repchange/broadcast
+{
+    &quot;hashes&quot;: {
+        &quot;md5&quot;: &quot;f2c7bb8acc97f92e987a2d4087d01221&quot;,
+        &quot;sha1&quot;: &quot;7eb0139d2175739b3ccb0d1110067820be6abd2b&quot;
+    },
+    &quot;newReputations&quot;: {
+        &quot;1&quot;: {
+            &quot;attributes&quot;: {
+                &quot;2120340&quot;: &quot;0&quot;
+            },
+            &quot;createDate&quot;: 1480551590,
+            &quot;providerId&quot;: 1,
+            &quot;trustLevel&quot;: 0
+        },
+        &quot;3&quot;: {
+            &quot;attributes&quot;: {
+                &quot;2101652&quot;: &quot;0&quot;,
+                &quot;2102165&quot;: &quot;1480551374&quot;,
+                &quot;2111893&quot;: &quot;244&quot;,
+                &quot;2114965&quot;: &quot;1&quot;,
+                &quot;2139285&quot;: &quot;73183493944770750&quot;
+            },
+            &quot;createDate&quot;: 1480551374,
+            &quot;providerId&quot;: 3,
+            &quot;trustLevel&quot;: 99
+        }
+    },
+    &quot;oldReputations&quot;: {
+        &quot;1&quot;: {
+            &quot;attributes&quot;: {
+                &quot;2120340&quot;: &quot;0&quot;
+            },
+            &quot;createDate&quot;: 1480551590,
+            &quot;providerId&quot;: 1,
+            &quot;trustLevel&quot;: 0
+        },
+        &quot;3&quot;: {
+            &quot;attributes&quot;: {
+                &quot;2101652&quot;: &quot;0&quot;,
+                &quot;2102165&quot;: &quot;1480551374&quot;,
+                &quot;2111893&quot;: &quot;244&quot;,
+                &quot;2114965&quot;: &quot;1&quot;,
+                &quot;2139285&quot;: &quot;73183493944770750&quot;
+            },
+            &quot;createDate&quot;: 1480551374,
+            &quot;providerId&quot;: 3,
+            &quot;trustLevel&quot;: 0
+        }
+    },
+    &quot;updateTime&quot;: 1481222923
+}</code></pre><p>The first line displays the DXL topic that the event was received on. In this
+particular case it is &quot;<code>/mcafee/event/tie/file/repchange/broadcast</code>&quot;, which
+indicates that this is a <code>file</code> reputation change event.</p>
+<p>The <code>reputation change</code> information is separated into 4 distinct sections:</p>
+<p>  <strong>Hash values</strong></p>
+<p>  An array of hashes that identify the file or certificate whose reputation
+  has changed.</p>
+<p>  <strong>New reputations</strong></p>
+<p>  The new <code>Reputations</code> for the file or certificate whose reputation has
+  changed, as an object.</p>
+<p>  <strong>Old reputations</strong></p>
+<p>  The previous <code>Reputations</code> for the file or certificate whose reputation has
+  changed, as an object.</p>
+<p>  <strong>Change time</strong></p>
+<p>  The time the reputation change occurred.</p>
+<h3>Details</h3><p>The majority of the sample code is shown below:</p>
+<pre class="prettyprint source lang-js"><code>// Create the client
+var client = new dxl.Client(config)
+
+// Define the callback to receive reputation change events
+var repChangeCallback = function (repChangeObj, originalEvent) {
+  // Display the DXL topic that the event was received on
+  console.log('Reputation change on topic: ' +
+    originalEvent.destinationTopic)
+  // Dump the reputation change info
+  console.log(MessageUtils.objectToJson(repChangeObj, true))
+}
+
+// Connect to the fabric, supplying a callback function which is invoked
+// when the connection has been established
+client.connect(function () {
+  // Create the McAfee Threat Intelligence Exchange (TIE) client
+  var tieClient = new TieClient(client)
+
+  // Register callbacks with client to receive both file and certificate
+  // reputation change events
+  tieClient.addFileReputationChangeCallback(repChangeCallback)
+  tieClient.addCertificateReputationChangeCallback(repChangeCallback)
+
+  // Wait forever
+  console.log('Waiting for reputation change events...')
+})</code></pre><p>A callback function, <code>repChangeCallback</code>, is defined for handling reputation
+change events. When a reputation change event occurs, this function will display
+the topic that the event was received on. The reputation change details are
+printed by converting the <code>repChangeObj</code> object to JSON with a call to the
+<a href="https://opendxl.github.io/opendxl-bootstrap-javascript/jsdoc/module-MessageUtils.html#.objectToJson">MessageUtils.objectToJson()</a>
+method.</p>
+<p>Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect">connect()</a>
+method will be invoked. From within the callback function, a <a href="TieClient.html">TieClient</a>
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.</p>
+<p>Next, a call is made to both the
+<a href="TieClient.html#addFileReputationChangeCallback">addFileReputationChangeCallback()</a>
+and
+<a href="TieClient.html#addCertificateReputationChangeCallback">addCertificateReputationChangeCallback()</a>
+methods to register the <code>repChangeCallback</code> function to be invoked when
+file and certificate reputation change events occur.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Basic Detection Callback Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Basic Detection Callback Example</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Basic Detection Callback Example</h2>
+</header>
+
+<article>
+    <p>This sample demonstrates registering a callback with the DXL fabric to receive
+<code>detection</code> events sent by the McAfee Threat Intelligence Exchange (TIE)
+DXL service when <code>detections</code> occur on managed systems.</p>
+<h3>Prerequisites</h3><ul>
+<li>The samples configuration step has been completed (see <a href="tutorial-samples.html">Samples</a>).</li>
+<li>A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+fabric.</li>
+</ul>
+<h3>Running</h3><p>To run this sample execute the
+<code>sample/basic/basic-detection-callback-example.js</code> script as follows:</p>
+<pre class="prettyprint source lang-sh"><code>$ node sample/basic/basic-detection-callback-example.js</code></pre><p>The output should appear similar to the following:</p>
+<pre class="prettyprint source"><code>Waiting for detection events...</code></pre><p>At this point the sample is listening for detection events from the DXL fabric.</p>
+<h3>Force Detection</h3><p>The actual steps to force a detection are outside the scope of this client
+library. However, the following guidelines might prove useful:</p>
+<ul>
+<li>Select a test executable file that is not covered by a certificate.</li>
+<li>Make a backup of the test file (it may be cleaned depending on the current
+action enforcement policy).</li>
+<li>Ensure your reputation thresholds are properly configured in policy.</li>
+<li>Set the reputation for the test executable within the <code>TIE Reputations</code> page
+so that a detection will occur.</li>
+</ul>
+<h3>Reputation Change Output</h3><p>After the reputation change has occurred the reputation change information
+should appear within the console that the sample is running (similar to the
+output below):</p>
+<h3>Detection Output</h3><p>After the detection has occurred the detection information should appear within
+the console that the sample is running (similar to the output below):</p>
+<pre class="prettyprint source"><code>Detection on topic: /mcafee/event/tie/file/detection
+{
+    &quot;agentGuid&quot;: &quot;{68125cd6-a5d8-11e6-348e-000c29663178}&quot;,
+    &quot;detectionTime&quot;: 1481301796,
+    &quot;hashes&quot;: {
+        &quot;md5&quot;: &quot;eb5e2b9dc51817a086d7b97eb52410ab&quot;,
+        &quot;sha1&quot;: &quot;435dfd470f727437c7cb4f07cba1f9a1f4272656&quot;,
+        &quot;sha256&quot;: &quot;414bb16b10ece2db2d8448cb9f313f80cb77c310ca0c19ee03c73cba0c16fedb&quot;
+    },
+    &quot;localReputation&quot;: 1,
+    &quot;name&quot;: &quot;FOCUS_MALWARE2.EXE&quot;,
+    &quot;remediationAction&quot;: 5
+}</code></pre><p>The first line displays the DXL topic that the event was received on. In this
+particular case it is &quot;<code>/mcafee/event/tie/file/detection</code>&quot;, which indicates that
+this is a <code>file</code> detection event.</p>
+<p>The following information is included in the <code>detection</code> object:</p>
+<ul>
+<li>System the detection occurred on.</li>
+<li>Time the detection occurred (Epoch time).</li>
+<li>File that triggered the detection (file name and associated hashes).</li>
+<li>Reputation value that was calculated locally which triggered the detection.</li>
+<li>Remediation action that occurred in response to the detection.</li>
+</ul>
+<h3>Details</h3><p>The majority of the sample code is shown below:</p>
+<pre class="prettyprint source lang-js"><code>// Create the client
+var client = new dxl.Client(config)
+
+// Connect to the fabric, supplying a callback function which is invoked
+// when the connection has been established
+client.connect(function () {
+  // Create the McAfee Threat Intelligence Exchange (TIE) client
+  var tieClient = new TieClient(client)
+
+  // Register detection callback with the client
+  tieClient.addFileDetectionCallback(function (detectionObj, originalEvent) {
+    // Display the DXL topic that the event was received on
+    console.log('Detection on topic: ' + originalEvent.destinationTopic)
+    // Dump the detection info
+    console.log(MessageUtils.objectToJson(detectionObj, true))
+  })
+
+  // Wait forever
+  console.log('Waiting for detection events...')
+})</code></pre><p>Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect">connect()</a>
+method will be invoked. From within the callback function, a <a href="TieClient.html">TieClient</a>
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.</p>
+<p>Next, a call is made to the
+<a href="TieClient.html#addFileDetectionCallback">addFileDetectionCallback()</a>
+method to register a function to be invoked when detection events occur.</p>
+<p>When a detection event occurs, the detection callback will display the topic
+that the event was received on. The detection details are printed by converting
+the <code>detectionObj</code> object to JSON with a call to the
+<a href="https://opendxl.github.io/opendxl-bootstrap-javascript/jsdoc/module-MessageUtils.html#.objectToJson">MessageUtils.objectToJson()</a>
+method.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

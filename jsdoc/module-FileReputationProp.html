@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: FileReputationProp</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: FileReputationProp</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>The standard set of properties that are included with each
+<code>file reputation</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PROVIDER_ID</td>
+<td>The identifier of the particular <code>provider</code> that provided the reputation.</td>
+</tr>
+<tr>
+<td>TRUST_LEVEL</td>
+<td>The <code>trust level</code> for the file.</td>
+</tr>
+<tr>
+<td>CREATE_DATE</td>
+<td>The time this reputation was created (Epoch time).</td>
+</tr>
+<tr>
+<td>ATTRIBUTES</td>
+<td>A provider-specific set of attributes associated with the reputation, as an object.</td>
+</tr>
+</tbody>
+</table></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="constants_file-reputation-prop.js.html">constants/file-reputation-prop.js</a>, <a href="constants_file-reputation-prop.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".ATTRIBUTES"><span class="type-signature">(static) </span>ATTRIBUTES<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A provider-specific set of attributes associated with the reputation,
+as an object.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></td>
+<td>Attributes associated with the <code>Enterprise</code> reputation provider for files.</td>
+</tr>
+<tr>
+<td><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></td>
+<td>Attributes associated with the <code>Global Threat Intelligence (GTI)</code> reputation provider for files.</td>
+</tr>
+<tr>
+<td><a href="module-AtdAttrib.html">AtdAttrib</a></td>
+<td>Attributes associated with the <code>Advanced Threat Defense (ATD)</code> reputation provider.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="constants_file-reputation-prop.js.html">constants/file-reputation-prop.js</a>, <a href="constants_file-reputation-prop.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".CREATE_DATE"><span class="type-signature">(static) </span>CREATE_DATE<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>The time this reputation was created (Epoch time).</p>
+<p>See the <a href="module-EpochUtil.html">EpochUtil</a> module for helper methods used
+to parse the Epoch time.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="constants_file-reputation-prop.js.html">constants/file-reputation-prop.js</a>, <a href="constants_file-reputation-prop.js.html#line36">line 36</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".PROVIDER_ID"><span class="type-signature">(static) </span>PROVIDER_ID<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>The identifier of the particular <code>provider</code> that provided the reputation.</p>
+<p>See the <a href="module-FileProvider.html">FileProvider</a> constants module for the
+list of <code>file reputation providers</code>.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="constants_file-reputation-prop.js.html">constants/file-reputation-prop.js</a>, <a href="constants_file-reputation-prop.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".TRUST_LEVEL"><span class="type-signature">(static) </span>TRUST_LEVEL<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>The <code>trust level</code> for the file.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="constants_file-reputation-prop.js.html">constants/file-reputation-prop.js</a>, <a href="constants_file-reputation-prop.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

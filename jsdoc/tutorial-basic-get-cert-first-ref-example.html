@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Basic Get Certificate First References Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Basic Get Certificate First References Example</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Basic Get Certificate First References Example</h2>
+</header>
+
+<article>
+    <p>This sample demonstrates invoking the McAfee Threat Intelligence Exchange (TIE)
+DXL service to retrieve the set of systems which have referenced a certificate
+(as identified by hashes).</p>
+<h3>Prerequisites</h3><ul>
+<li>The samples configuration step has been completed (see <a href="tutorial-samples.html">Samples</a>).</li>
+<li>A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+fabric.</li>
+</ul>
+<h3>Setup</h3><p>The example includes preconfigured hash constants for a certificate to look up.
+Modify these for a certificate which is known to have run within the enterprise
+for better results:</p>
+<pre class="prettyprint source lang-js"><code>// Hashes for the certificate to look up
+// These can be replaced by a certificate which is known to have run within the
+// enterprise for better results
+var CERTIFICATE_BODY_SHA1 = '6eae26db8c13182a7947982991b4321732cc3de2'
+var CERTIFICATE_PUBLIC_KEY_SHA1 = '3b87a2d6f39770160364b79a152fcc73bae27adf'</code></pre><h3>Running</h3><p>To run this sample execute the
+<code>sample/basic/basic-get-cert-first-ref-example.js</code> script as follows:</p>
+<pre class="prettyprint source lang-sh"><code>$ node sample/basic/basic-get-cert-first-ref-example.js</code></pre><p>The output should appear similar to the following:</p>
+<pre class="prettyprint source"><code>Systems that have referenced the certificate:
+
+        {3a6f574a-3e6f-436d-acd4-bcde336b054d}: 2016-10-07 13:54:52
+        {68125cd6-a5d8-11e6-348e-000c29663178}: 2016-11-08 09:29:32</code></pre><p>The sample outputs the GUIDs for systems that have referenced the certificate.
+The first time each system referenced the certificate is also displayed.</p>
+<h3>Details</h3><p>The majority of the sample code is shown below:</p>
+<pre class="prettyprint source lang-js"><code>// Create the client
+var client = new dxl.Client(config)
+
+// Hashes for the certificate to look up
+// These can be replaced by a certificate which is known to have run within the
+// enterprise for better results
+var CERTIFICATE_BODY_SHA1 = '6eae26db8c13182a7947982991b4321732cc3de2'
+var CERTIFICATE_PUBLIC_KEY_SHA1 = '3b87a2d6f39770160364b79a152fcc73bae27adf'
+
+// Connect to the fabric, supplying a callback function which is invoked
+// when the connection has been established
+client.connect(function () {
+  // Create the McAfee Threat Intelligence Exchange (TIE) client
+  var tieClient = new TieClient(client)
+
+  // Get an array of systems that have referenced the certificate
+  tieClient.getCertificateFirstReferences(
+    function (error, systems) {
+      // Destroy the client - frees up resources so that the application
+      // stops running
+      client.destroy()
+      if (error) {
+        console.log('Error getting certificate references: ' + error.message)
+      } else {
+        // Display information for the systems which have referenced
+        // the certificate
+        console.log('\nSystems that have referenced the certificate:\n')
+        systems.forEach(function (system) {
+          console.log('\t' + system[FirstRefProp.SYSTEM_GUID] + ': ' +
+            EpochUtil.toLocalTimeString(system[FirstRefProp.DATE])
+          )
+        })
+      }
+    },
+    CERTIFICATE_BODY_SHA1,
+    CERTIFICATE_PUBLIC_KEY_SHA1
+  )
+})</code></pre><p>Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect">connect()</a>
+method will be invoked. From within the callback function, a <a href="TieClient.html">TieClient</a>
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.</p>
+<p>Next, a call is made to the TieClient instance's
+<a href="TieClient.html#getCertificateFirstReferences">getCertificateFirstReferences()</a>
+method, along with the hash values that are used to identify the file.</p>
+<p>On successful execution of the first references lookup, the second parameter
+provided to the callback, <code>systems</code>, contains an array of systems. The <code>systems</code>
+array is iterated, displaying the system's GUID along with the first time the
+system referenced the certificate.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

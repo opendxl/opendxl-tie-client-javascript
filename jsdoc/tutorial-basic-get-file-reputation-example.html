@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Basic Get File Reputation Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Basic Get File Reputation Example</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>Basic Get File Reputation Example</h2>
+</header>
+
+<article>
+    <p>This sample demonstrates invoking the McAfee Threat Intelligence Exchange (TIE)
+DXL service to retrieve the reputation of files (as identified by their hashes).</p>
+<h3>Prerequisites</h3><ul>
+<li>The samples configuration step has been completed (see <a href="tutorial-samples.html">Samples</a>).</li>
+<li>A McAfee Threat Intelligence Exchange (TIE) Service is available on the DXL
+fabric.</li>
+</ul>
+<h3>Running</h3><p>To run this sample execute the <code>sample/basic/basic-get-file-reputation-example.js</code>
+script as follows:</p>
+<pre class="prettyprint source lang-sh"><code>$ node sample/basic/basic-get-file-reputation-example.js</code></pre><p>The output should appear similar to the following:</p>
+<pre class="prettyprint source"><code>Notepad.exe reputations:
+{
+    &quot;1&quot;: {
+        &quot;attributes&quot;: {
+            &quot;2120340&quot;: &quot;2139160704&quot;
+        },
+        &quot;createDate&quot;: 1480455704,
+        &quot;providerId&quot;: 1,
+        &quot;trustLevel&quot;: 99
+    },
+    &quot;3&quot;: {
+        &quot;attributes&quot;: {
+            &quot;2101652&quot;: &quot;233&quot;,
+            &quot;2102165&quot;: &quot;1476902802&quot;,
+            &quot;2111893&quot;: &quot;242&quot;,
+            &quot;2114965&quot;: &quot;4&quot;,
+            &quot;2139285&quot;: &quot;73183493944770750&quot;
+        },
+        &quot;createDate&quot;: 1476902802,
+        &quot;providerId&quot;: 3,
+        &quot;trustLevel&quot;: 99
+    }
+}
+
+EICAR reputations:
+{
+    &quot;1&quot;: {
+        &quot;attributes&quot;: {
+            &quot;2120340&quot;: &quot;2139162632&quot;
+        },
+        &quot;createDate&quot;: 1480616574,
+        &quot;providerId&quot;: 1,
+        &quot;trustLevel&quot;: 1
+    },
+    &quot;3&quot;: {
+        &quot;attributes&quot;: {
+            &quot;2101652&quot;: &quot;120&quot;,
+            &quot;2102165&quot;: &quot;1476902803&quot;,
+            &quot;2111893&quot;: &quot;242&quot;,
+            &quot;2114965&quot;: &quot;0&quot;,
+            &quot;2139285&quot;: &quot;73183493944770750&quot;
+        },
+        &quot;createDate&quot;: 1476902803,
+        &quot;providerId&quot;: 3,
+        &quot;trustLevel&quot;: 0
+    }
+}</code></pre><p>The sample outputs the file reputation for two files.</p>
+<p>The <code>key</code> for each property in the object corresponds to a particular <code>provider</code>
+of the associated <code>reputation</code>. The list of <code>file reputation providers</code> can be
+found in the <a href="module-FileProvider.html">FileProvider</a> constants module.</p>
+<p>The first file queried in the TIE service is “notepad.exe”. The McAfee Global
+Threat Intelligence (GTI) service is identified in the results as
+<code>&quot;providerId&quot; : 1</code>. The trust level associated with the GTI response
+(<code>&quot;trustLevel&quot;: 99</code>) indicates that the file is known good.</p>
+<p>The second file queried in the TIE service is the 
+“EICAR Standard Anti-Virus Test File”. The trust level associated with the GTI
+response (<code>&quot;trustLevel&quot;: 1</code>) indicates that the file is known bad.</p>
+<p>See the <a href="module-TrustLevel.html">TrustLevel</a> constants module for the list of
+standard trust levels.</p>
+<h3>Details</h3><p>The majority of the sample code is shown below:</p>
+<pre class="prettyprint source lang-js"><code>// Create the client
+var client = new dxl.Client(config)
+
+// Connect to the fabric, supplying a callback function which is invoked
+// when the connection has been established
+client.connect(function () {
+  // Create the McAfee Threat Intelligence Exchange (TIE) client
+  var tieClient = new TieClient(client)
+
+  var notepadHashes = {}
+  notepadHashes[HashType.MD5] = 'f2c7bb8acc97f92e987a2d4087d021b1'
+  notepadHashes[HashType.SHA1] = '7eb0139d2175739b3ccb0d1110067820be6abd29'
+  notepadHashes[HashType.SHA256] = '142e1d688ef0568370c37187fd9f2351d7ddeda574f8bfa9b0fa4ef42db85aa2'
+
+  // Request reputation for notepad.exe
+  tieClient.getFileReputation(
+    function (error, notepadReputations) {
+      if (error) {
+        // Destroy the client - frees up resources so that the application
+        // stops running
+        client.destroy()
+        console.log('Error getting Notepad.exe reputations: ' + error.message)
+      } else {
+        // Display reputation for notepad.exe
+        console.log('Notepad.exe reputations:')
+        console.log(MessageUtils.objectToJson(notepadReputations, true) + '\n')
+
+        var eicarHashes = {}
+        eicarHashes[HashType.MD5] = '44d88612fea8a8f36de82e1278abb02f'
+        eicarHashes[HashType.SHA1] = '3395856ce81f2b7382dee72602f798b642f14140'
+        eicarHashes[HashType.SHA256] = '275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f'
+
+        // Request reputation for EICAR
+        tieClient.getFileReputation(
+          function (error, eicarReputations) {
+            // Destroy the client - frees up resources so that the application
+            // stops running
+            client.destroy()
+            if (error) {
+              console.log('Error getting EICAR reputations: ' + error.message)
+            } else {
+              // Display reputation for EICAR
+              console.log('EICAR reputations:')
+              console.log(MessageUtils.objectToJson(eicarReputations, true))
+            }
+          },
+          eicarHashes
+        )
+      }
+    },
+    notepadHashes
+  )
+})</code></pre><p>Once a connection is established to the DXL fabric, the callback function
+supplied to the DXL client instance's
+<a href="https://opendxl.github.io/opendxl-client-javascript/jsdoc/Client.html#connect">connect()</a>
+method will be invoked. From within the callback function, a <a href="TieClient.html">TieClient</a>
+instance is created. The TieClient instance will be used to communicate with the
+TIE DXL services.</p>
+<p>For each file whose reputations are retrieved, a call is made to the
+TieClient instance's <a href="TieClient.html#getFileReputation">getFileReputation()</a>
+method, along with the hash values that are used to identify the file.</p>
+<p>On successful execution of the reputation lookup, the second parameter provided
+to the callback &mdash; <code>notepadReputations</code> / <code>eicarReputations</code> &mdash;
+contains the reputations. The reputations are printed by converting the
+response object to JSON with a call to the
+<a href="https://opendxl.github.io/opendxl-bootstrap-javascript/jsdoc/module-MessageUtils.html#.objectToJson">MessageUtils.objectToJson()</a>
+method.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AtdAttrib.html">AtdAttrib</a></li><li><a href="module-AtdTrustLevel.html">AtdTrustLevel</a></li><li><a href="module-CertEnterpriseAttrib.html">CertEnterpriseAttrib</a></li><li><a href="module-CertGtiAttrib.html">CertGtiAttrib</a></li><li><a href="module-CertProvider.html">CertProvider</a></li><li><a href="module-CertRepChangeEventProp.html">CertRepChangeEventProp</a></li><li><a href="module-CertReputationOverriddenProp.html">CertReputationOverriddenProp</a></li><li><a href="module-CertReputationProp.html">CertReputationProp</a></li><li><a href="module-DetectionEventProp.html">DetectionEventProp</a></li><li><a href="module-EpochUtil.html">EpochUtil</a></li><li><a href="module-FileEnterpriseAttrib.html">FileEnterpriseAttrib</a></li><li><a href="module-FileGtiAttrib.html">FileGtiAttrib</a></li><li><a href="module-FileProvider.html">FileProvider</a></li><li><a href="module-FileRepChangeEventProp.html">FileRepChangeEventProp</a></li><li><a href="module-FileReputationProp.html">FileReputationProp</a></li><li><a href="module-FirstInstanceEventProp.html">FirstInstanceEventProp</a></li><li><a href="module-FirstRefProp.html">FirstRefProp</a></li><li><a href="module-HashType.html">HashType</a></li><li><a href="module-RepChangeEventProp.html">RepChangeEventProp</a></li><li><a href="module-TrustLevel.html">TrustLevel</a></li></ul><h3>Externals</h3><ul><li><a href="external-DxlClient.html">DxlClient</a></li><li><a href="external-Event.html">Event</a></li></ul><h3>Classes</h3><ul><li><a href="TieClient.html">TieClient</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-installation.html">Library Installation</a></li><li><a href="tutorial-samples.html">Samples</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
