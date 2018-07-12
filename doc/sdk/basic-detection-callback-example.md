@@ -110,7 +110,7 @@ method will be invoked. From within the callback function, a {@link TieClient}
 instance is created. The TieClient instance will be used to communicate with the
 TIE DXL services.
 
-Next, a call is made to the
+Next, a call is made to the TieClient instance's
 [addFileDetectionCallback()]{@link TieClient#addFileDetectionCallback}
 method to register a function to be invoked when detection events occur.
 

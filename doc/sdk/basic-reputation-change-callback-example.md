@@ -184,5 +184,5 @@ Next, a call is made to both the
 [addFileReputationChangeCallback()]{@link TieClient#addFileReputationChangeCallback}
 and
 [addCertificateReputationChangeCallback()]{@link TieClient#addCertificateReputationChangeCallback}
-methods to register the `repChangeCallback` function to be invoked when
-file and certificate reputation change events occur.
+methods on the TieClient instance to register the `repChangeCallback` function
+to be invoked when file and certificate reputation change events occur.
