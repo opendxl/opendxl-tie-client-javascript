@@ -20,21 +20,22 @@ directory which you extracted from the SDK zip file. For example:
 cd {@releasezipname}
 ```
 
-To install the client from a local tarball for a Mac or Linux-based operating
+To install the library from a local tarball for a Mac or Linux-based operating
 system, run the following command:
 
 ```sh
 npm install lib/{@releasetarballname} --save
 ```
 
-To install the client from a local tarball for Windows, run:
+To install the library from a local tarball for Windows, run:
 
 ```sh
 npm install lib\{@releasetarballname} --save
 ```
 
-To install the client via the
-[npm package registry](https://www.npmjs.com/package/@opendxl/dxl-tie-client), run:
+To install the library via the
+[npm package registry](https://www.npmjs.com/package/@opendxl/dxl-tie-client),
+run:
 
 ```sh
 npm install @opendxl/dxl-tie-client --save
