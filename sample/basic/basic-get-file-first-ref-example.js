@@ -1,8 +1,8 @@
 'use strict'
 
 var common = require('../common')
-var dxl = require('@opendxl/dxl-client')
-var tie = common.requireTieClient()
+var dxl = common.require('@opendxl/dxl-client')
+var tie = common.require('@opendxl/dxl-tie-client')
 var EpochUtil = tie.EpochUtil
 var FirstRefProp = tie.FirstRefProp
 var HashType = tie.HashType

@@ -1,10 +1,9 @@
 'use strict'
 
 var common = require('../common')
-var dxl = require('@opendxl/dxl-client')
-var tie = common.requireTieClient()
-var TieClient = tie.TieClient
-var MessageUtils = require('@opendxl/dxl-bootstrap').MessageUtils
+var dxl = common.require('@opendxl/dxl-client')
+var TieClient = common.require('@opendxl/dxl-tie-client').TieClient
+var MessageUtils = common.require('@opendxl/dxl-bootstrap').MessageUtils
 
 // Create DXL configuration from file
 var config = dxl.Config.createDxlConfigFromFile(common.CONFIG_FILE)
