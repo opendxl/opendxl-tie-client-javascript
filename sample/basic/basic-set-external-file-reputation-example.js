@@ -7,6 +7,7 @@ var MessageUtils = common.require('@opendxl/dxl-bootstrap').MessageUtils
 var HashType = tie.HashType
 var TieClient = tie.TieClient
 var TrustLevel = tie.TrustLevel
+var FileType = tie.FileType
 
 // Create DXL configuration from file
 var config = dxl.Config.createDxlConfigFromFile(common.CONFIG_FILE)
@@ -60,7 +61,7 @@ client.connect(function() {
                             console.log('Event Sent')
                         },
                         TrustLevel.KNOWN_TRUSTED,
-                        18,
+                        FileType.PEEXE,
                         hashes,
                         'notepad.exe',
                         'Reputation set via OpenDXL'
