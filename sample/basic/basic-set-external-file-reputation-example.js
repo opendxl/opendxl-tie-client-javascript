@@ -23,7 +23,7 @@ client.connect(function() {
     var externalTrustLevel = TrustLevel.KNOWN_TRUSTED
     
     // Hashes for the file whose reputation should be set. These use the hashes for
-    // file by default but could be replaced with appropriate values for the
+    // a random file "file.exe" by default but could be replaced with appropriate values for the
     // file whose reputation should be set.
     var hashes = {}
     hashes[HashType.MD5] = 'f2c7bb8acc97f92e987a2d4087d021b1' //FILE_MD5
@@ -45,9 +45,9 @@ client.connect(function() {
                     // To minimize redundancy and conflict among providers ensure there is no other reputation with a relevant score,
                     // detection content will only follow external provider as a fallback'
                     if (i != 11) {
-                        // if the oficial providers do not have a reputation for the specified file or is unknown and the external reputation does not
-                        // have conflicts with the oficial provider's reputation, then the reputation can be set
-                        if (fileReputation[i].trustLevel != 0 && fileReputation[i].trustLevel != 50) {
+                        // if the oficial providers do not have a reputation for the specified file or is unknown and the external reputation
+                        // does not have conflicts with the oficial provider's reputation, then the reputation can be set
+                        if (fileReputation[i].trustLevel != 50 && fileReputation[i].trustLevel != 0) {
                             setReputation = false;
                             break;
                         }
@@ -62,13 +62,13 @@ client.connect(function() {
                             console.log('Event Sent')
                         },
                         TrustLevel.KNOWN_TRUSTED,
-                        FileType.PEEXE,
                         hashes,
+                        FileType.PEEXE,
                         'file.exe',
                         'Reputation set via OpenDXL'
                     )
                 } else {
-                    console.error('Error setting reputation: The reputation you try to set has conflicts with the current reputation');
+                    console.error('Error: The reputation you try to set has conflicts with the current reputation');
                     client.destroy();
                 }
             }
