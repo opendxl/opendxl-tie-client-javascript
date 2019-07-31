@@ -17,6 +17,9 @@
       "basic-set-file-reputation-example": {
         "title": "Basic Set File Reputation Example"
       },
+      "basic-set-external-file-reputation-example": {
+        "title": "Basic Set External File Reputation Example"
+      },
       "basic-set-cert-reputation-example": {
         "title": "Basic Set Certificate Reputation Example"
       },
