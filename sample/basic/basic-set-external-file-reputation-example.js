@@ -44,7 +44,7 @@ client.connect(function () {
       } else {
         //
         // Check if there's any definitive reputation (different to Not Set [0] and Unknown [50])
-        // for any provider except for External Provider (providerId=11)
+        // for any provider except for External Provider (providerId=15)
         //
         var hasDefinitiveReputation = Object.values(fileReputation).some(function (r) {
           return r.trustLevel !== TrustLevel.NOT_SET &&
