@@ -1,6 +1,6 @@
 # McAfee Threat Intelligence Exchange (TIE) DXL JavaScript Client Library
 [![Latest NPM Version](https://img.shields.io/npm/v/@opendxl/dxl-tie-client.svg)](https://www.npmjs.com/package/@opendxl/dxl-tie-client)
-[![Build Status](https://img.shields.io/travis/opendxl/opendxl-tie-client-javascript/master.svg)](https://travis-ci.org/opendxl/opendxl-tie-client-javascript)
+[![Actions Status](https://github.com/opendxl/opendxl-tie-client-javascript/workflows/Build/badge.svg)](https://github.com/opendxl/opendxl-tie-client-javascript/actions)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
