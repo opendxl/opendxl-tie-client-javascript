@@ -25,6 +25,7 @@ to access the features of TIE.
       * {@tutorial basic-get-file-reputation-example}
       * {@tutorial basic-get-cert-reputation-example}
       * {@tutorial basic-set-file-reputation-example}
+      * {@tutorial basic-set-external-file-reputation-example}
       * {@tutorial basic-set-cert-reputation-example}
       * {@tutorial basic-get-file-first-ref-example}
       * {@tutorial basic-get-cert-first-ref-example}

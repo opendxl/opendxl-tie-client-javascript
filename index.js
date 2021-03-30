@@ -22,3 +22,4 @@ exports.FirstInstanceEventProp = require('./lib/constants/first-instance-event-p
 exports.FirstRefProp = require('./lib/constants/first-ref-prop')
 exports.HashType = require('./lib/constants/hash-type')
 exports.TrustLevel = require('./lib/constants/trust-level')
+exports.FileType = require('./lib/constants/file-type')
