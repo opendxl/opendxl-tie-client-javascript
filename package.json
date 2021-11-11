@@ -20,8 +20,8 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "@opendxl/dxl-client": "^0.0.1",
     "@opendxl/dxl-bootstrap": "^0.1.0",
+    "@opendxl/dxl-client": "0.0.1",
     "inherits": "^2.0.3",
     "long": "^4.0.0",
     "safe-buffer": "^5.1.1"

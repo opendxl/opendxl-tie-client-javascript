@@ -2,6 +2,10 @@ This sample demonstrates invoking the McAfee Threat Intelligence Exchange (TIE)
 DXL service to set the enterprise-specific `trust level` of a file (as
 identified by its hashes).
 
+
+>From **TIE Server 3.0.0** and above it's recommended for automated integrations to set an External Reputation (see {@tutorial basic-set-external-file-reputation-example}) instead of an Enterprise Override.
+
+
 ### Prerequisites
 
 * The samples configuration step has been completed (see {@tutorial samples}).
